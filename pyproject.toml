@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drone-object-detection"
+version = "0.1.0"
+description = "Small objects from a drone: YOLO26 on VisDrone at 640 px, at 1280 px and on overlapping tiles, scored with the official ignore regions and AP by object size."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Kacper Pawlowski" }]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python-headless>=4.9",
+    "pillow>=10",
+    "requests>=2.31",
+    "torch>=2.3",
+    "torchvision>=0.18",
+    "pycocotools>=2.0.8",
+]
+
+[project.optional-dependencies]
+train = ["ultralytics>=8.4"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+aerial-data = "aerial.visdrone:main"
+aerial-slice = "aerial.tiling:main"
+aerial-train = "aerial.train:main"
+aerial-eval = "aerial.evaluate:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "NPY"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
